@@ -1,6 +1,6 @@
 FROM --platform=linux/amd64 ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update -y && apt-get install --no-install-recommends -y xfce4 xfce4-goodies tigervnc-standalone-server novnc websockify sudo xterm init systemd snapd vim net-tools curl wget git tzdata
+RUN apt-get update -y && apt-get install --no-install-recommends -y xfce4 xfce4-goodies tigervnc-standalone-server novnc websockify sudo xterm netsurf-gtk init systemd snapd vim net-tools curl wget git tzdata
 RUN apt-get update -y && apt-get install -y dbus-x11 x11-utils x11-xserver-utils x11-apps
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:mozillateam/ppa -y
@@ -9,6 +9,7 @@ RUN echo 'Pin: release o=LP-PPA-mozillateam' >> /etc/apt/preferences.d/mozilla-f
 RUN echo 'Pin-Priority: 1001' >> /etc/apt/preferences.d/mozilla-firefox
 RUN apt-get update -y && apt-get install -y firefox
 RUN apt-get update -y && apt-get install -y xubuntu-icon-theme
+RUN printf '%s\n' '[Desktop Entry]' 'Name=NetSurf' 'Comment=Lightweight web browser' 'Exec=netsurf-gtk %u' 'Terminal=false' 'Type=Application' 'Categories=Network;WebBrowser;' > /usr/share/applications/netsurf.desktop
 RUN touch /root/.Xauthority
 
 COPY start.sh /usr/local/bin/start-remote-desktop
