@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 DISPLAY_NUM="${DISPLAY_NUM:-1}"
 GEOMETRY="${GEOMETRY:-1280x800}"
-PORT="${PORT:-6080}"
+PORT="6080"
 export DISPLAY=":${DISPLAY_NUM}"
 
 mkdir -p /root/.vnc
