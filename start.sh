@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 DISPLAY_NUM="${DISPLAY_NUM:-1}"
 GEOMETRY="${GEOMETRY:-1280x800}"
-PORT="6080"
+PORT="${PORT:-6080}"
 export DISPLAY=":${DISPLAY_NUM}"
 
 mkdir -p /root/.vnc
@@ -11,4 +11,7 @@ printf '%s\n' '#!/bin/sh' 'unset SESSION_MANAGER' 'unset DBUS_SESSION_BUS_ADDRES
 chmod 0755 /root/.vnc/xstartup
 
 vncserver "${DISPLAY}" -localhost no -SecurityTypes None -geometry "${GEOMETRY}" -depth 24 --I-KNOW-THIS-IS-INSECURE
-exec websockify --web=/usr/share/novnc/ "0.0.0.0:${PORT}" "localhost:$((5900 + DISPLAY_NUM))"
+websockify --web=/usr/share/novnc/ "0.0.0.0:${PORT}" "localhost:$((5900 + DISPLAY_NUM))" &
+WEBSOCKIFY_PID=$!
+trap 'kill "$WEBSOCKIFY_PID" 2>/dev/null || true' EXIT
+wait "$WEBSOCKIFY_PID"
