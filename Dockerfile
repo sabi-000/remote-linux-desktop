@@ -1,23 +1,14 @@
-FROM lscr.io/linuxserver/webtop:ubuntu-xfce
+FROM --platform=linux/amd64 ubuntu:22.04
 
-USER root
+ENV DEBIAN_FRONTEND=noninteractive DISPLAY=:1 HOME=/root
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        bash \
-        ca-certificates \
-        curl \
-        dbus-x11 \
-        fonts-dejavu \
-        fonts-liberation \
-        fonts-noto-core \
-        wget \
-    && (apt-get install -y --no-install-recommends firefox-esr || true) \
+    && apt-get install -y --no-install-recommends xfce4 xfce4-goodies tigervnc-standalone-server novnc websockify dbus-x11 xterm curl wget ca-certificates openssl sudo firefox xubuntu-icon-theme \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY start.sh /custom-cont-init.d/99-remote-desktop.sh
-RUN chmod 0755 /custom-cont-init.d/99-remote-desktop.sh
+COPY start.sh /usr/local/bin/start-remote-desktop
+RUN chmod 0755 /usr/local/bin/start-remote-desktop
 
-# LinuxServer's /init remains PID 1 and starts Webtop/KasmVNC.
-ENTRYPOINT ["/init"]
+EXPOSE 6080
+CMD ["/usr/local/bin/start-remote-desktop"]
