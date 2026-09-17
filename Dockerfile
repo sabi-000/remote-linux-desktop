@@ -12,7 +12,7 @@ RUN apt-get update \
         fonts-liberation \
         fonts-noto-core \
         wget \
-        firefox-esr \
+    && (apt-get install -y --no-install-recommends firefox-esr || true) \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
