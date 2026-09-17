@@ -7,7 +7,7 @@ PORT="${PORT:-6080}"
 export DISPLAY=":${DISPLAY_NUM}"
 
 mkdir -p /root/.vnc
-printf '%s\n' '#!/bin/sh' 'unset SESSION_MANAGER' 'unset DBUS_SESSION_BUS_ADDRESS' 'exec startxfce4' > /root/.vnc/xstartup
+printf '%s\n' '#!/bin/sh' 'unset SESSION_MANAGER' 'unset DBUS_SESSION_BUS_ADDRESS' 'exec dbus-run-session -- startxfce4' > /root/.vnc/xstartup
 chmod 0755 /root/.vnc/xstartup
 
 vncserver "${DISPLAY}" -localhost no -SecurityTypes None -geometry "${GEOMETRY}" -depth 24 --I-KNOW-THIS-IS-INSECURE
